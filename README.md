@@ -1,2 +1,1 @@
-# ai-network-lab
-ai-network-lab
+# AI Network Lab
