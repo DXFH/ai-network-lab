@@ -1,6 +1,7 @@
 import socket
 import requests
 import time
+from monitoring.metrics import latency_metric
 
 targets = [
     "chat.openai.com",
@@ -48,3 +49,22 @@ def run_probe():
         })
 
     return results
+
+def http_test(url):
+
+    start = time.time()
+
+    try:
+
+        requests.get(url, timeout=5)
+
+        latency = round((time.time()-start)*1000,2)
+
+    except:
+
+        latency = -1
+
+    # 把数据发送给 Prometheus
+    latency_metric.labels(target=url).set(latency)
+
+    return latency

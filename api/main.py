@@ -11,6 +11,8 @@ import requests
 import time
 import threading
 from orchestrator.scheduler import scheduler
+from prometheus_client import start_http_server
+from ai_access.checker import check_ai_access
 
 app = FastAPI()
 
@@ -46,3 +48,10 @@ def route():
 thread = threading.Thread(target=scheduler)
 thread.daemon = True
 thread.start()
+
+start_http_server(9000)
+
+@app.get("/ai_status")
+def ai_status():
+
+    return check_ai_access()
